@@ -20,9 +20,9 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
     background: #2d4966;
-    padding: 20px 60px;
+    padding: 45px 60px;
     border-radius: 20px;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
     border: 10px solid #215488; 
