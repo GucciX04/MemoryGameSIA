@@ -13,23 +13,56 @@
         <button class="reset" onclick="window.location.reload();">Reset Game</button>              
     </div>
     <script>
-        const emojis = ['🍎', '🍎','🍌', '🍌','🍒','🍒', '🍇', '🍇', '🍉', '🍉','🍊','🍊',
-         '🍋', '🍋','🍍','🍍'];
-        var shuf_emojis = emojis.sort(() => (Math.random() >.5) ? 2 : -1);
-        for (var i =0; i<emojis.length; i++){
-            let box = document.createElement('div');
-            box.className = 'item';
-            box.innerHTML = shuf_emojis[i];
+    const emojis = ['🍎', '🍎','🍌', '🍌','🍒','🍒', '🍇', '🍇', '🍉', '🍉','🍊','🍊',
+        '🍋', '🍋','🍍','🍍'];
+    const shuffledEmojis = emojis.sort(() => Math.random() - 0.5);
+    const gameBoard = document.querySelector('.game');
 
-            box.onclick = function(){
-                this.classList.add('boxOpen');
-            
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+
+    for (let i = 0; i < shuffledEmojis.length; i++) {
+        let box = document.createElement('div');
+        box.className = 'item';
+        box.innerHTML = shuffledEmojis[i];
+
+        box.addEventListener('click', function () {
+            if (lockBoard || box.classList.contains('boxOpen') || box.classList.contains('boxMatch')) return;
+
+            box.classList.add('boxOpen');
+
+            if (!firstCard) {
+                firstCard = box;
+            } else {
+                secondCard = box;
+                lockBoard = true;
+
+                setTimeout(() => {
+                    if (firstCard.innerHTML === secondCard.innerHTML) {
+                        firstCard.classList.add('boxMatch');
+                        secondCard.classList.add('boxMatch');
+                    } else {
+                        firstCard.classList.remove('boxOpen');
+                        secondCard.classList.remove('boxOpen');
+                    }
+
+                    firstCard = null;
+                    secondCard = null;
+                    lockBoard = false;
+
+                    if (document.querySelectorAll('.boxMatch').length === emojis.length) {
+                        setTimeout(() => {
+                            alert('You win!');
+                        }, 300);
+                    }
+                }, 800);
             }
+        });
 
+        gameBoard.appendChild(box);
+    }
+</script>
 
-
-            document.querySelector('.game').appendChild(box);
-        }
-    </script>
 </body>
 </html>
