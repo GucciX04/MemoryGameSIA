@@ -52,10 +52,12 @@
                     lockBoard = false;
 
                     if (document.querySelectorAll('.boxMatch').length === emojis.length) {
-                        setTimeout(() => {
-                            alert('You win!');
-                        }, 300);
-                    }
+                    setTimeout(() => {
+                        alert('You win!');
+                        window.location.reload(); 
+                    }, 300);
+                }
+
                 }, 800);
             }
         });
