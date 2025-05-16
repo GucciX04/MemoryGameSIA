@@ -1,79 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="X-UA-Compatible" content="IE=edge">
-    <title>Memory Game</title>
-    <link rel="stylesheet" type ="text/css" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="X-UA-Compatible" content="IE=edge">
+  <title>Memory Game</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  
 </head>
 <body>
-    <div class = "container">
-        <h2>Memory Game</h2>
-        <div class="game"></div>
-        
-        <div class="controls">
-    <div class="attempts">Attempts: <span id="attemptCount">0</span></div>
-    <button class="reset" onclick="window.location.reload();">Reset Game</button>
-</div>
-    </div>
-    <script>
-    const emojis = ['🍎', '🍎','🍌', '🍌','🍒','🍒', '🍇', '🍇', '🍉', '🍉','🍊','🍊',
-        '🍋', '🍋','🍍','🍍'];
-    const shuffledEmojis = emojis.sort(() => Math.random() - 0.5);
-    const gameBoard = document.querySelector('.game');
+  <div class="emoji-choice">
+    <button onclick="startGame('fruits')">Fruits</button>
+    <button onclick="startGame('faces')">Faces</button>
+  </div>
 
+  <div class="container">
+    <h2>Memory Game</h2>
+    <p id="categoryLabel" class="category-label">Fruit Category</p>
+    <div class="game"></div>
+    <div class="controls">
+      <div class="attempts">Attempts: <span id="attemptCount">0</span></div>
+      <button class="reset" onclick="resetGame()">Reset Game</button>
+    </div>
+  </div>
+
+  <script>
+    const fruits = ['🍎','🍎','🍌','🍌','🍒','🍒','🍇','🍇','🍉','🍉','🍊','🍊','🍋','🍋','🍍','🍍'];
+    const faces = ['😀','😀','😎','😎','🤓','🤓','😭','😭','😡','😡','😍','😍','😱','😱','😴','😴'];
+    let currentSet = 'fruits';
     let firstCard = null;
     let secondCard = null;
     let lockBoard = false;
     let attemptCount = 0;
+
+    const gameBoard = document.querySelector('.game');
     const attemptDisplay = document.getElementById('attemptCount');
 
-    for (let i = 0; i < shuffledEmojis.length; i++) {
+    function resetGame() {
+      const items = document.querySelectorAll('.item');
+      items.forEach(item => {
+        item.classList.add('resetting');
+      });
+
+      setTimeout(() => {
+        startGame(currentSet);
+      }, 400);
+    }
+
+    function startGame(setName) {
+      currentSet = setName;
+      document.getElementById('categoryLabel').textContent =
+        setName === 'fruits' ? 'Fruit Category' : 'Faces Category';
+
+      const emojis = setName === 'fruits' ? [...fruits] : [...faces];
+      const shuffled = emojis.sort(() => Math.random() - 0.5);
+
+      gameBoard.innerHTML = '';
+      attemptCount = 0;
+      attemptDisplay.textContent = attemptCount;
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+
+      for (let i = 0; i < shuffled.length; i++) {
         let box = document.createElement('div');
         box.className = 'item';
-        box.innerHTML = shuffledEmojis[i];
+        box.innerHTML = shuffled[i];
 
         box.addEventListener('click', function () {
-            if (lockBoard || box.classList.contains('boxOpen') || box.classList.contains('boxMatch')) return;
+          if (lockBoard || box.classList.contains('boxOpen') || box.classList.contains('boxMatch')) return;
 
-            box.classList.add('boxOpen');
+          box.classList.add('boxOpen');
 
-            if (!firstCard) {
-                firstCard = box;
-            } else {
-                secondCard = box;
-                lockBoard = true;
+          if (!firstCard) {
+            firstCard = box;
+          } else {
+            secondCard = box;
+            lockBoard = true;
 
+            setTimeout(() => {
+              if (firstCard.innerHTML === secondCard.innerHTML) {
+                firstCard.classList.add('boxMatch');
+                secondCard.classList.add('boxMatch');
+                firstCard.style.transform = 'rotateY(180deg)';
+                secondCard.style.transform = 'rotateY(180deg)';
+              } else {
+                firstCard.classList.remove('boxOpen');
+                secondCard.classList.remove('boxOpen');
+                attemptCount++;
+                attemptDisplay.textContent = attemptCount;
+              }
+
+              firstCard = null;
+              secondCard = null;
+              lockBoard = false;
+
+              if (document.querySelectorAll('.boxMatch').length === emojis.length) {
                 setTimeout(() => {
-                    if (firstCard.innerHTML === secondCard.innerHTML) {
-                        firstCard.classList.add('boxMatch');
-                        secondCard.classList.add('boxMatch');
-                    } else {
-                        firstCard.classList.remove('boxOpen');
-                        secondCard.classList.remove('boxOpen');
-
-                        attemptCount++;
-                        attemptDisplay.textContent = attemptCount;
-                    }
-
-                    firstCard = null;
-                    secondCard = null;
-                    lockBoard = false;
-
-                    if (document.querySelectorAll('.boxMatch').length === emojis.length) {
-                    setTimeout(() => {
-                        alert('You win! \n' + 'Total Attempts: ' + attemptCount);
-                        window.location.reload(); 
-                    }, 300);
-                }
-
-                }, 800);
-            }
+                  alert('You win!' + '\nAttempts: ' + attemptCount);
+                  startGame(currentSet);
+                }, 300);
+              }
+            }, 800);
+          }
         });
 
         gameBoard.appendChild(box);
-    }
-</script>
+      }
 
+      setTimeout(() => {
+        document.querySelectorAll('.item').forEach(item => {
+          item.classList.add('animate');
+          item.addEventListener('animationend', () => {
+            item.classList.remove('animate');
+          }, { once: true });
+        });
+      }, 50);
+    }
+
+    window.onload = () => startGame('fruits');
+  </script>
 </body>
 </html>

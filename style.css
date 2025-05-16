@@ -20,7 +20,7 @@ body{
     flex-direction: column;
     gap: 30px;
     background: #2d4966;
-    padding: 40px 60px;
+    padding: 20px 60px;
     border-radius: 20px;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
     border: 10px solid #215488; 
@@ -74,7 +74,7 @@ h2
 .item{
     position: relative;
     width: 100px;
-    height: 100px;
+    height: 105px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -96,6 +96,7 @@ h2
     transition: 0.25s;
     transform: rotate(0deg);
     backface-visibility: hidden;
+    border-radius: 15px;
 }
 
 .boxOpen::after{
@@ -132,4 +133,68 @@ h2
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
     filter: brightness(1.2);
 }
+.emoji-choice {
+  position: absolute;
+  top: 50%;
+  right: 350px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
+.emoji-choice button {
+  padding: 10px 15px;
+  font-size: 1em;
+  background-color: #fff;
+  color: #2d4966;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.emoji-choice button:hover {
+  background-color: #213448;
+  color: #fff;
+}
+
+.category-label {
+  margin-top: -5px;
+  margin-bottom: 5px;
+  font-size: 25px;
+  color: #ffffffcc;
+  font-style: italic;
+  text-align: center;
+
+}
+@keyframes flipOut {
+  0% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(90deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.item.resetting {
+  animation: flipOut 0.4s ease forwards;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.item.animate {
+    animation: fadeInScale 0.5s ease;
+}
