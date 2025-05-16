@@ -21,4 +21,77 @@ body{
     gap: 30px;
     background: #2d4966;
     padding: 40px 60px;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    border: 5px solid #215488; 
+ 
+}
+h2  
+{
+    font-size: 3em;
+    color: #fff;
+    letter-spacing: 0.1em;    
+}
+.reset{
+    padding: 15px 20px;
+    color: #2d4966;
+    background: #fff;
+
+    font-size: 1.2em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    
+}
+.reset:hover{
+    background: #213448;
+    color: #fff;
+    transition: 0.3s;
+}
+.reset:focus{
+    color: #fff;
+    background: #213448;
+}
+
+.game{
+    width: 440px;
+    height: 440px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    transform-style: preserve-3d;
+    perspective: 500px;
+}
+.item{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    background: #213448;
+    transform: rotateY(180deg);
+    border-radius: 15px;
+    transition: 0.25s;
+}
+.item.boxOpen{
+    transform: rotate(0deg);
+}
+.item::after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #213448;
+    /*opacity: 0.85; */
+    transition: 0.25s;
+    transform: rotate(0deg);
+    backface-visibility: hidden;
+}
+
+.boxOpen::after{
+    transform: rotateY(180deg);
 }
