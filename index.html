@@ -10,7 +10,11 @@
     <div class = "container">
         <h2>Memory Game</h2>
         <div class="game"></div>
-        <button class="reset" onclick="window.location.reload();">Reset Game</button>              
+        
+        <div class="controls">
+    <button class="reset" onclick="window.location.reload();">Reset Game</button>
+    <div class="attempts">Attempts: <span id="attemptCount">0</span></div>
+</div>
     </div>
     <script>
     const emojis = ['🍎', '🍎','🍌', '🍌','🍒','🍒', '🍇', '🍇', '🍉', '🍉','🍊','🍊',
@@ -21,6 +25,8 @@
     let firstCard = null;
     let secondCard = null;
     let lockBoard = false;
+    let attemptCount = 0;
+    const attemptDisplay = document.getElementById('attemptCount');
 
     for (let i = 0; i < shuffledEmojis.length; i++) {
         let box = document.createElement('div');
@@ -45,6 +51,9 @@
                     } else {
                         firstCard.classList.remove('boxOpen');
                         secondCard.classList.remove('boxOpen');
+
+                        attemptCount++;
+                        attemptDisplay.textContent = attemptCount;
                     }
 
                     firstCard = null;
@@ -53,7 +62,7 @@
 
                     if (document.querySelectorAll('.boxMatch').length === emojis.length) {
                     setTimeout(() => {
-                        alert('You win!');
+                        alert('You win! \n' + 'Total Attempts: ' + attemptCount);
                         window.location.reload(); 
                     }, 300);
                 }
