@@ -200,3 +200,63 @@ h2
 .item.animate {
     animation: fadeInScale 0.5s ease;
 }
+
+/* ===== LOGIN & SIGNUP FORM STYLES ===== */
+.auth-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background: #2e2e3a;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 8px;
+  background: #444;
+  color: #fff;
+  font-size: 14px;
+}
+
+.auth-container input[type="submit"] {
+  width: 100%;
+  background: #4CAF50;
+  color: white;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.auth-container input[type="submit"]:hover {
+  background: #45a049;
+}
+
+.auth-container .link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.auth-container .link a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.auth-container .link a:hover {
+  text-decoration: underline;
+}
