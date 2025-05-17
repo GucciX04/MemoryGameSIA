@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +12,13 @@
   <meta name="X-UA-Compatible" content="IE=edge">
   <title>Memory Game</title>
   <link rel="stylesheet" type="text/css" href="style.css">
-  
 </head>
 <body>
+  <div style="position: absolute; top: 10px; right: 10px; font-size: 16px;">
+    Logged in as: <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+    | <a href="logout.php" style="color: yellow; text-decoration: none;">Logout</a>
+  </div>
+
   <div class="emoji-choice">
     <button onclick="startGame('fruits')">Fruits</button>
     <button onclick="startGame('faces')">Faces</button>
@@ -95,19 +106,12 @@
               lockBoard = false;
 
               if (document.querySelectorAll('.boxMatch').length === emojis.length) {
-  setTimeout(() => {
-    alert('You win!' + '\nAttempts: ' + attemptCount);
-
-    // Save attempt via AJAX
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'save_attempt.php', true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.send('attempts=' + attemptCount + '&category=' + currentSet);
-
-    startGame(currentSet);
-  }, 300);
-}
-
+                setTimeout(() => {
+                  alert('You win!' + '\nAttempts: ' + attemptCount);
+                  saveAttempt(attemptCount, currentSet); // Save attempt to DB
+                  startGame(currentSet);
+                }, 300);
+              }
             }, 800);
           }
         });
@@ -123,6 +127,13 @@
           }, { once: true });
         });
       }, 50);
+    }
+
+    function saveAttempt(attempts, category) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "save_attempt.php", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.send("attempts=" + attempts + "&category=" + category);
     }
 
     window.onload = () => startGame('fruits');
